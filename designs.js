@@ -1,3 +1,5 @@
+// Reference: Knowlege from udacity.com (https://knowledge.udacity.com/)
+
 // Select color input
 const colorPicker = document.getElementById('colorPicker');
 // Select size input
