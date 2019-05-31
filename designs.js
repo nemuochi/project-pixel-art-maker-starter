@@ -1,31 +1,46 @@
-// Reference: Knowlege from udacity.com (https://knowledge.udacity.com/)
+// <Reference>
+// - Knowlege from udacity.com (https://knowledge.udacity.com/)
+// - MDN web Docs; EventTarget.addEventListener
+// (https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)
 
 // Select color input
 const colorPicker = document.getElementById('colorPicker');
 // Select size input
 const sizePicker = document.getElementById('sizePicker');
-
-// function makeGrid makes a table and coloring a cell clicked
+// Changed to global valuables and use them here to access there val.
+const height = document.getElementById('inputHeight');
+const width = document.getElementById('inputWidth');
+const canvas = document.getElementById('pixelCanvas');
+// function makeGrid makes a table and coloring a cell that is clicked
 function makeGrid() {
-  const height = document.getElementById('inputHeight').value;
-  const width = document.getElementById('inputWidth').value;
-  const canvas = document.getElementById('pixelCanvas');
-  for (let n=1; n<=width; n++){
+  const wInput = width.value;
+  const hInput = height.value;
+  for (let n=1; n<=wInput; n++){
     const row = document.createElement('tr');
     canvas.appendChild(row);
-    for (let m=1; m<=height; m++){
+    for (let m=1; m<=hInput; m++){
       const column = document.createElement('td');
       row.appendChild(column);
-      // fill a cell with the selected color
-      row.addEventListener('click', function(event){
-        const color = colorPicker.value;
-        event.target.style.backgroundColor= color;
-      });
     }
   }
 }
+// function canvasArt fills a cell with the picked color and
+// undo(erase) the color when you click the target again.
+function drawCanvas() {
+  canvas.addEventListener('click', function(event){
+    const color = colorPicker.value;
+    const cell_color = event.target.style;
+    if (cell_color.backgroundColor === ''){
+      cell_color.backgroundColor = color;
+    }else{
+      cell_color.backgroundColor = '';
+    }
+  });
+}
 // When size is submitted by the user, call makeGrid()
-document.addEventListener('submit', function(event){
+// And when clicked submit button again, it resets the screen.
+sizePicker.addEventListener('submit', function(event){
   event.preventDefault();
   makeGrid();
-});
+  drawCanvas();
+}, {once:true});
