@@ -1,7 +1,6 @@
 // <Reference>
 // - Knowlege from udacity.com (https://knowledge.udacity.com/)
-// - MDN web Docs; EventTarget.addEventListener
-// (https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)
+// - MDN web Docs (https://developer.mozilla.org/en-US/docs/Web/API/)
 
 // Select color input
 const colorPicker = document.getElementById('colorPicker');
@@ -25,18 +24,13 @@ function makeGrid() {
       row.addEventListener('click', function(event){
         let color = colorPicker.value;
         let cell_color = event.target.style;
-        // With click, fill a single square with the picked color a cell,
-        // with another click, remove the color of the square
+        // click once, fill a single square with the picked color,
+        // click twice, remove the color of the square
         if (cell_color.backgroundColor === ''){
           cell_color.backgroundColor = color;
         }else{
           cell_color.backgroundColor = '';
         }
-        // If there are already colored squares in the grid,
-        // clicking the Submit button clears them out.
-        sizePicker.addEventListener('submit', function(evt){
-          cell_color.backgroundColor= '';
-        });
       });
     }
   }
@@ -44,5 +38,8 @@ function makeGrid() {
 // When size is submitted by the user, call makeGrid()
 sizePicker.addEventListener('submit', function(e){
   e.preventDefault();
+  // If there are already colored squares in the grid,
+  // clicking the Submit button clears them out.
+  canvas.innerHTML = null;
   makeGrid();
 });
