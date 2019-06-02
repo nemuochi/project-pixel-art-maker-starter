@@ -8,39 +8,41 @@ const colorPicker = document.getElementById('colorPicker');
 // Select size input
 const sizePicker = document.getElementById('sizePicker');
 // Changed to global valuables and use them here to access there val.
-const height = document.getElementById('inputHeight');
-const width = document.getElementById('inputWidth');
 const canvas = document.getElementById('pixelCanvas');
+const width = document.getElementById('inputWidth');
+const height = document.getElementById('inputHeight');
+
 // function makeGrid makes a table and coloring a cell that is clicked
 function makeGrid() {
-  const wInput = width.value;
-  const hInput = height.value;
-  for (let n=1; n<=wInput; n++){
-    const row = document.createElement('tr');
-    canvas.appendChild(row);
-    for (let m=1; m<=hInput; m++){
-      const column = document.createElement('td');
-      row.appendChild(column);
+  let wInput = width.value;
+  let hInput = height.value;
+  for (let n=1; n<=hInput; n++){
+    let column = document.createElement('tr');
+    canvas.appendChild(column);
+    for (let m=1; m<=wInput; m++){
+      let row = document.createElement('td');
+      column.appendChild(row);
+      row.addEventListener('click', function(event){
+        let color = colorPicker.value;
+        let cell_color = event.target.style;
+        // With click, fill a single square with the picked color a cell,
+        // with another click, remove the color of the square
+        if (cell_color.backgroundColor === ''){
+          cell_color.backgroundColor = color;
+        }else{
+          cell_color.backgroundColor = '';
+        }
+        // If there are already colored squares in the grid,
+        // clicking the Submit button clears them out.
+        sizePicker.addEventListener('submit', function(evt){
+          cell_color.backgroundColor= '';
+        });
+      });
     }
   }
 }
-// function canvasArt fills a cell with the picked color and
-// undo(erase) the color when you click the target again.
-function drawCanvas() {
-  canvas.addEventListener('click', function(event){
-    const color = colorPicker.value;
-    const cell_color = event.target.style;
-    if (cell_color.backgroundColor === ''){
-      cell_color.backgroundColor = color;
-    }else{
-      cell_color.backgroundColor = '';
-    }
-  });
-}
 // When size is submitted by the user, call makeGrid()
-// And when clicked submit button again, it resets the screen.
-sizePicker.addEventListener('submit', function(event){
-  event.preventDefault();
+sizePicker.addEventListener('submit', function(e){
+  e.preventDefault();
   makeGrid();
-  drawCanvas();
-}, {once:true});
+});
